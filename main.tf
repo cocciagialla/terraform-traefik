@@ -6,7 +6,7 @@ resource "helm_release" "traefik" {
   repository       = "https://helm.traefik.io/traefik"
   chart            = "traefik"
   version          = var.chart_version
-  values           = var.values_yaml_body
+  values           = [var.values_yaml_body]
 }
 
 #---------------------------------------------------------------
