@@ -1,0 +1,11 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: vpn-ip-whitelist
+  namespace: traefik
+spec:
+  ipWhiteList:
+    sourceRange:
+      - xxx.xxx.xxx.xxx/32
+#    ipStrategy:
+#      depth: 3

@@ -1,0 +1,33 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+    name: dashboard
+    namespace: traefik
+spec:
+    entryPoints:
+        - web
+        %{ if enable_websecure }
+        - websecure # usually when load balancer can not execute SSL termination
+        %{ endif }
+
+    routes:
+        - match: Host(`${host}`) && (PathPrefix(`/dashboard`, `/dashboard/`) || PathPrefix(`/api`, `/api/`))
+          kind: Rule
+          services:
+              - name: api@internal
+                kind: TraefikService
+          middlewares:
+              - name: dashboard-auth
+                namespace: traefik
+#              - name: vpn-ip-whitelist
+#                namespace: traefik
+        - match: Host(`${host}`) && PathPrefix(`/ping`)
+          kind: Rule
+          services:
+              - name: ping@internal
+                kind: TraefikService
+        - match: Host(`${host}`) && PathPrefix(`/metrics`)
+          kind: Rule
+          services:
+              - name: prometheus@internal
+                kind: TraefikService
