@@ -21,7 +21,7 @@ spec:
                 namespace: traefik
 #              - name: vpn-ip-whitelist
 #                namespace: traefik
-        - match: Host(`${host}`) && PathPrefix(`/ping`)
+        - match: PathPrefix(`/ping`) # expose ping to AWS ALB Target Groups health check
           kind: Rule
           services:
               - name: ping@internal
