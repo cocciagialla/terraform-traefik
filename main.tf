@@ -33,7 +33,8 @@ resource "kubectl_manifest" "traefik_middleware_basic_auth" {
   yaml_body = file("${path.module}/confs/middleware_basic_auth.yaml")
 
   depends_on = [
-    helm_release.traefik
+    helm_release.traefik,
+    kubectl_manifest.traefik_middleware_basic_auth_secret
   ]
 }
 
@@ -44,6 +45,7 @@ resource "kubectl_manifest" "traefik_dashboard_ingress_route" {
   })
 
   depends_on = [
+    kubectl_manifest.traefik_middleware_basic_auth,
     kubectl_manifest.traefik_middleware_vpn_whitelist
   ]
 }
